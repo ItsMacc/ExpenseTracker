@@ -29,6 +29,7 @@ header span{
     margin-bottom: 7%;
     font-size: 110%;
     font-family: Monaco;
+    text-align : center;
 
     display: grid;
     gap: 10px;
@@ -42,11 +43,9 @@ header span{
 
 .display{
     border:2px solid;
-    text-align:center;
 }
 
 .column{
-    text-align: center;
     border: 2px solid;
 }
 
