@@ -22,7 +22,7 @@ def home():
 
 @app.route('/sign-in-page')
 def sign_in():
-    return (render_template("sign-in.html",msg="false"))
+    return render_template("sign-in.html", msg="false")
 
 @app.route('/expense-tracker')
 def expense_tracker():
