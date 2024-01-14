@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/main.css">
+
+    <title>ExpenseTracker</title>
+</head>
+<body>
+    <!-- 
+        Header
+    -->
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">ExpenseTracker</span>
+          </a>
+    
+          <ul class="nav nav-pills">
+                       {% if IS_SIGNED_IN %}
+              <li class="nav-item"><a href="/log-out" class="nav-link active" aria-current="page">Log Out</a></li>
+            <li class="nav-item"><a href="/expense-tracker" class="nav-link">Track Expenses</a></li>
+            {% else %}
+              <li class="nav-item"><a href="/sign-in-page" class="nav-link active" aria-current="page">Sign In</a></li>
+            {% endif %}
+            <li class="nav-item"><a href="#" class="nav-link">How To Use</a></li>
+          </ul>
+        </header>
+      </div>
+
+    <!-- 
+        Card
+    -->
+    <section class="relative pt-16 bg-blueGray-50">
+        <div class="container mx-auto">
+          <div class="flex flex-wrap items-center">
+      
+            <!-- Left Content (Image and Text) -->
+            <div id ="cardImage" class="w-full md:w-6/12 lg:w-6/12 px-4 md:px-4 mt-8 md:mt-0">
+              <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-pink-500">
+                <img alt="..." src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=700&amp;q=80" class="w-full align-middle rounded-t-lg">
+                <blockquote class="relative p-8 mb-4">
+                  <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 583 95" class="absolute left-0 w-full block h-95-px -top-94-px">
+                    <polygon points="-30,95 583,95 583,65" class="text-pink-500 fill-current"></polygon>
+                  </svg>
+                  <h4 class="text-xl font-bold text-black">
+                    Track your daily expenses!
+                  </h4>
+                  <p class="text-md font-light mt-2 text-black">
+                    Welcome to our expense tracking platform, where managing your finances becomes effortless! 
+                    At ExpenseTracker, we understand the importance of staying on top of your daily expenditures.
+                    Whether you're budgeting for personal goals or simply aiming for financial awareness, our user-friendly expense tracker is here to simplify your financial journey.
+                  </p>
+                </blockquote>
+              </div>
+            </div>
+      
+            <!-- Right Content (Features) -->
+            <div class="w-full md:w-6/12 px-4">
+              <div class="flex flex-wrap gap-12">
+      
+                <!-- Feature 1 -->
+                <div class="w-full md:w-6/12 mt-4 px-2">
+                  <div class="relative flex flex-col">
+                    <div class="py-2 flex-auto">
+                      <h6 class="text-xl mb-1 font-semibold">Effortless Expense Entry</h6>
+                      <p class="mb-4 text-blueGray-500">
+                        Streamline the process of recording your expenses with our easy-to-use interface. 
+                        Whether it's a quick coffee purchase or a monthly bill, effortlessly log your transactions in seconds. 
+                        Our intuitive design ensures that managing your expenses is a hassle-free experience.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- Feature 2 -->
+                <div class="w-full md:w-6/12 mt-4 px-2">
+                  <div class="relative flex flex-col">
+                    <div class="py-2 flex-auto">
+                      <h6 class="text-xl mb-1 font-semibold">
+                        Insightful Spending Analysis
+                      </h6>
+                      <p class="mb-4 text-blueGray-500">
+                        Gain valuable insights into your spending patterns and financial habits. 
+                        Explore visualizations and charts that break down your expenses by category, helping you identify areas for potential savings.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- Feature 3 -->
+                <div class="w-full md:w-6/12 mt-4 px-2">
+                  <div class="relative flex flex-col">
+                    <div class="py-2 flex-auto">
+                      <h6 class="text-xl mb-1 font-semibold">Financial Insight</h6>
+                      <p class="mb-4 text-blueGray-500">
+                        Take control of your finances by setting personalized budgets.
+                        Our smart budgeting tools make it easy to plan, track, and adjust your financial goals, ensuring you stay on the path to financial success.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- Feature 4 -->
+                <div class="w-full md:w-6/12 mt-4 px-2">
+                  <div class="relative flex flex-col">
+                    <div class="py-2 flex-auto">
+                      <h6 class="text-xl mb-1 font-semibold">Secure and Personalized Experience</h6>
+                      <p class="mb-4 text-blueGray-500">
+                        Your financial data is important, and we prioritize its security. 
+                        Enjoy a secure and private environment with our state-of-the-art encryption measures.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
