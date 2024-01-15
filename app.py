@@ -1,79 +1,110 @@
-#IMPORTS:-
+# IMPORTS:-
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
+import json
+from bson import ObjectId
 
 app = Flask(__name__)
 
-#VARIABLES
+# VARIABLES
 IS_SIGNED_IN = False
 CURRENT_USER = "local"
 
-#MONGODB CONNECTION:-
+# MONGODB CONNECTION:-
 client = MongoClient("mongodb://localhost:27017")
 db = client["User_Information"]
 expenses_collection = db["ExpenseTracker"]
-password_collection = db["Passwords"]
+client_information_collection = db["Passwords"]
 
 
-#ALL ROUTES TO HTML FILES:-
-@app.route('/')
+# ALL ROUTES TO HTML FILES
+
+@app.route("/")
 def home():
-    return render_template("index.html",IS_SIGNED_IN=IS_SIGNED_IN)
+    return render_template("index.html",
+                           IS_SIGNED_IN=IS_SIGNED_IN)
 
-@app.route('/sign-in-page')
-def sign_in():
-    return render_template("sign-in.html", msg="false")
+@app.route("/sign-in-page")
+def sign_in_page():
+    return render_template("sign-in.html")
 
-@app.route('/expense-tracker')
+@app.route("/expense-tracker")
 def expense_tracker():
-    sum = totalAmount(CURRENT_USER)
-    expense_list = getUserExpenses(CURRENT_USER)
-    return render_template("./Expense Tracker/expense-tracker-main.html", data_list=expense_list,
-                           IS_SIGNED_IN=IS_SIGNED_IN,sum=sum)
+    return render_template("./Expense Tracker/expense-tracker-main.html",
+                           data_list=getUserExpenses(CURRENT_USER),
+                           IS_SIGNED_IN=IS_SIGNED_IN,
+                           sum=totalAmount())
 
+@app.route("/analysis")
+def analysis_page():
+    return render_template("analysis.html",
+                           category_total = generatePieChartValues(),
+                           IS_SIGNED_IN=IS_SIGNED_IN)
 
-#-----------------------------------------------------------------------------------------------------------------------
+@app.route("/edit-expenses")
+def edit_expenses_page():
+    return render_template("./Expense Tracker/edit-expenses.html",
+                           data_list=getUserExpenses(CURRENT_USER),
+                           IS_SIGNED_IN=IS_SIGNED_IN)
 
-# SIGN IN
-@app.route("/sign-in", methods=["GET", "POST"])
-def signIn():
+# ----------------------------------------------------------------------------------------------
+
+#Sign in the user
+@app.route("/sign-in", methods=["POST"])
+def sign_in():
     global IS_SIGNED_IN, CURRENT_USER
 
     if request.method == "POST":
+        form = request.form
 
-        # Get email id and password
-        email = request.form.get("email")
-        password = request.form.get("password")
-        user_information = password_collection.find_one({"email": email})
+        user_email = form.get("email")
+        password = form.get("password")
 
-        # Check if user exists in Database
+        user_information = client_information_collection.find_one({"user": user_email})
+
+        # Check if user exists and match password.
         if user_information:
-            db_password = user_information["password"]  # Fix here
+            db_password = user_information["password"]
+
             if db_password == password:
-                CURRENT_USER = email
                 IS_SIGNED_IN = True
+                CURRENT_USER = user_email
+                return expense_tracker()
             else:
-                msg = True
-                return render_template("sign-in.html", msg="true")
+                isIncorrectPassword = True
+                return render_template("sign-in.html", msg=isIncorrectPassword)
+
         else:
-            CURRENT_USER = email
+            # User does not exist
+            CURRENT_USER = user_email
             IS_SIGNED_IN = True
 
-            # Creating empty expense list for new user
-            expenses_collection.insert_one({"user": email, "expenses": {}})
+            # Creating a expense sheet for user
+            expenses_collection.insert_one({"user": user_email, "expenses": []})
 
-            # Updating password database to add new user
-            password_collection.insert_one({"email": email, "password": password})
+            # Saving user information in database
+            client_information_collection.insert_one({"user": user_email, "password": password})
 
         return expense_tracker()
 
 
-#Add expenses to database and webpage
-@app.route("/add-expense",methods=["POST"])
-def add_expenses():
+# Logout the user
+@app.route("/log-out")
+def log_out():
+    global IS_SIGNED_IN, CURRENT_USER
+
+    IS_SIGNED_IN = False
+    CURRENT_USER = "local"
+
+    return home()
+
+
+#Adds expenses to the database and website
+@app.route("/add-expense", methods=["POST"])
+def add_expense():
     global CURRENT_USER
 
-    if request.method=="POST":
+    if request.method == "POST":
         form = request.form
 
         date = form.get("Date")
@@ -83,70 +114,86 @@ def add_expenses():
         if description == "":
             description = "no description"
 
-        current_expense = {"Date":date, "Category":category, "Amount":amount, "Description":description}
-        all_user_expenses = expenses_collection.find_one({"user": CURRENT_USER})["expenses"]
+        # Add expense to user database with a unique ObjectId
+        new_expense = {"_id": ObjectId(),
+                       "Date": date, "Category": category, "Amount": amount, "Description": description}
+        query = {"$push": {"expenses": new_expense}}
+        expenses_collection.update_one({"user": CURRENT_USER}, query)
 
-        #Add expense to user database
-        current_e_no = len(all_user_expenses)
-        new_expense = {"Date":date,"Category":category,"Amount":amount,"Description":description}
-        querry = {"$set":{f"expenses.e{current_e_no+1}":new_expense}}
-        expenses_collection.update_one({"user":CURRENT_USER}, querry, upsert=True)
+        return redirect(url_for('expense_tracker'))
 
-        return expense_tracker()
 
-#Log the user out
-@app.route("/log-out")
-def logout():
-    global IS_SIGNED_IN, CURRENT_USER
+#Deletes any expense from database
+@app.route("/delete-expense", methods=["POST"])
+def delete_expenses():
+    global CURRENT_USER
 
-    IS_SIGNED_IN = False
-    CURRENT_USER = "local"
+    if request.method == "POST":
+        form = request.form
+        id_to_delete = form.get("expense_id")
 
-    return render_template("index.html")
+        # Convert the expense ID to ObjectId for querying
+        expense_id_object = ObjectId(id_to_delete)
 
-#Connect to database and pull all the expenses of the user.
-def getUserExpenses(user="local"):
-    all_user_expenses = expenses_collection.find_one({"user": user})["expenses"]
-    expense_list = []
+        expenses_collection.update_one(
+            {"user": CURRENT_USER},
+            {"$pull": {"expenses": {"_id": expense_id_object}}}
+        )
 
-    # Extract all expenses of the current user thats signed in
-    for key, values in all_user_expenses.items():
-        if values not in expense_list:
-            expense_list.append(values)
+    return render_template("./Expense Tracker/edit-expenses.html",
+                           IS_SIGNED_IN=IS_SIGNED_IN,
+                           data_list=getUserExpenses(CURRENT_USER))
 
-    return expense_list
+#----------------------------------------------------------------------------------------------
 
-#Get the sum of all expenses
-def totalAmount(user):
+
+#Helper function to reduce copying code
+
+
+#Retrieve user expenses from database
+#returns list of dictionary of expense > [ {id: e1 , Date: date ...}]
+def getUserExpenses(user):
+    global CURRENT_USER
+
+    current_expenses = expenses_collection.find_one({"user": user})["expenses"]
+    return current_expenses
+
+
+#returns the total amount spent
+def totalAmount():
+    global CURRENT_USER
     total = 0
-    user_expenses = expenses_collection.find_one({"user":user})["expenses"]
 
-    for key, values in user_expenses.items():
-        total+= int(values["Amount"])
+    data = getUserExpenses(CURRENT_USER)
+
+    #expense record returns each record as a dictionary
+    for expense_record in data:
+        amount = int(expense_record["Amount"])
+        total+=amount
+
 
     return total
 
-@app.route("/analysis")
-def showAnalysis():
-    expense_list = getUserExpenses(CURRENT_USER)
-    total = totalAmount(CURRENT_USER)
 
-    data = []
-    category_total = {}
+#returns a dictionary with category and its total amount > {Category:total}
+def generatePieChartValues():
+    expense_list = getUserExpenses("user1@gmail.com")
 
-    for expense in expense_list:
-        data.append(expense)
+    categoryTotal = {}
 
-    for entry in data:
-        category = entry['Category']
-        amount = int(entry['Amount'])
+    for expense_record in expense_list:
+        category = expense_record["Category"]
+        amount = expense_record["Amount"]
 
-        if category in category_total:
-            category_total[category] += round((amount / total) * 100)
+        if category not in categoryTotal:
+            categoryTotal[category] = amount
         else:
-            category_total[category] = round((amount / total) * 100)
+            categoryTotal[category] += amount
 
-    return render_template("/analysis.html", expense_list=expense_list, category_total=category_total, total=total,IS_SIGNED_IN=IS_SIGNED_IN)
+    return categoryTotal
 
+
+
+# Running the application
 if __name__ == "__main__":
-    app.run(debug=True,port=5069)
+    app.run(debug=True, port=5000)

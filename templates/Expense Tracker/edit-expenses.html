@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/other.css">
+    <link rel="stylesheet" href="../static/edit.css">
 
     <title>ExpenseTracker</title>
 </head>
 <body>
-    <!-- 
-        Header
-    -->
+    <!-- Header -->
     <div class="header">
         <div class="container">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -24,7 +22,7 @@
               </a>
 
               <ul class="nav nav-pills">
-                           {% if IS_SIGNED_IN %}
+                  {% if IS_SIGNED_IN %}
                   <li class="nav-item"><a href="/log-out" class="nav-link active" aria-current="page">Log Out</a></li>
                 <li class="nav-item"><a href="/expense-tracker" class="nav-link">Track Expenses</a></li>
                 {% else %}
@@ -36,26 +34,26 @@
           </div>
     </div>
 
-    {% block content %}
-    <div id="pieChart"></div>
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Expense Details
+            </div>
+            {% for data in data_list %}
+            <form action="/delete-expense" method="post">
+              <div class="card-body">
+                  <p class="card-text"><strong>Date:</strong> {{data.Date}}</p>
+                  <p class="card-text"><strong>Category:</strong> {{data.Category}}</p>
+                  <p class="card-text"><strong>Amount:</strong> {{data.Amount}}</p>
+                  <p class="card-text"><strong>Description:</strong> {{data.Description}}</p>
+                  <button class="del-btn" type="submit" name="expense_id" value="{{data._id}}">Delete</button>
+              </div>
+              <hr>
+          </form>
+            {% endfor %}
+        </div>
+    </div>
 
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script>
-        var categoryTotal = {{ category_total|tojson|safe }};
-
-        var data = [{
-            labels: Object.keys(categoryTotal),
-            values: Object.values(categoryTotal),
-            type: 'pie'
-        }];
-
-        var layout = {
-            title: 'Expense Distribution'
-        };
-
-        // Plot the pie chart
-        Plotly.newPlot('pieChart', data, layout);
-    </script>
-{% endblock %}
 </body>
 </html>
