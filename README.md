@@ -32,5 +32,5 @@ This application simplifies personal finance management by providing the followi
    python app.py
 
 ## **License:**
-```bash
-Feel free to use expense tracker locally on your browser or make changes to it by adding features.
+Feel free to use expense tracker locally on your browser.
+If you want to add feautures to the website or make it look better, I will certainly appreciate your contribution.
