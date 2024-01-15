@@ -38,7 +38,7 @@ def expense_tracker():
 @app.route("/analysis")
 def analysis_page():
     return render_template("analysis.html",
-                           category_total = generatePieChartValues(),
+                           category_total = generatePieChartValues(CURRENT_USER),
                            IS_SIGNED_IN=IS_SIGNED_IN)
 
 @app.route("/edit-expenses")
@@ -176,8 +176,8 @@ def totalAmount():
 
 
 #returns a dictionary with category and its total amount > {Category:total}
-def generatePieChartValues():
-    expense_list = getUserExpenses("user1@gmail.com")
+def generatePieChartValues(user):
+    expense_list = getUserExpenses(user)
 
     categoryTotal = {}
 
