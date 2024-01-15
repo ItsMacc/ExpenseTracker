@@ -30,6 +30,6 @@ This application simplifies personal finance management by providing the followi
 3. **Run the application:**
    ```bash
    python app.py
-   
-4. **License:**
+
+## **License:**
 Feel free to use expense tracker locally on your browser or make changes to it by adding features.
