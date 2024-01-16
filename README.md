@@ -22,6 +22,7 @@ This application simplifies personal finance management by providing the followi
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/ItsMacc/ExpenseTracker.git
+   cd ExpenseTracker
    
 2. **Install requirements:**
    ```bash
