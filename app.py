@@ -1,8 +1,8 @@
 # IMPORTS:-
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
-import json
 from bson import ObjectId
+import os
 
 app = Flask(__name__)
 
@@ -11,11 +11,11 @@ IS_SIGNED_IN = False
 CURRENT_USER = "local"
 
 # MONGODB CONNECTION:-
-client = MongoClient("mongodb://localhost:27017")
+mongo_uri = os.environ.get("mongo_uri")
+client = MongoClient(mongo_uri)
 db = client["User_Information"]
 expenses_collection = db["ExpenseTracker"]
 client_information_collection = db["Passwords"]
-
 
 # ALL ROUTES TO HTML FILES
 
