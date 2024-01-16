@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/help.css">
+
+    <title>ExpenseTracker</title>
+</head>
+<body>
+    <!--
+        Header
+    -->
+    <div class="header">
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">ExpenseTracker</span>
+          </a>
+
+          <ul class="nav nav-pills">
+            {% if IS_SIGNED_IN %}
+              <li class="nav-item"><a href="/log-out" class="nav-link active" aria-current="page">Log Out</a></li>
+            <li class="nav-item"><a href="/expense-tracker" class="nav-link">Track Expenses</a></li>
+            {% else %}
+              <li class="nav-item"><a href="/sign-in-page" class="nav-link active" aria-current="page">Sign In</a></li>
+            {% endif %}
+            <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          </ul>
+        </header>
+      </div>
+    </div>
+
+    <!--
+      Help
+    -->
+    <div class="help-info-box">
+      <div class="headings">
+          <h3>Getting Started</h3>
+          <hr>
+      </div>
+      <div class="sub-text">
+          <p>Welcome to the Expense Tracker app! This guide will help you get started with managing your expenses efficiently.</p>
+          <p>Follow these steps to make the most of the app:</p>
+          <ol>
+              <li>Sign in to your account using your email and password.</li>
+              <li>If you dont have an account, just enter your email and password and jump right in.</li>
+              <li>Explore the "Track Expenses" section to add expenses based on: </li>
+                <ol>
+                  <li class="show">Date</li>
+                  <li class="show">Category</li>
+                  <li class="show">Amount</li>
+                  <li class="show">Description (optional)</li>
+                </ol>
+              <li>Check the "Analysis" page for insights into your spending habits with a pie chart.</li>
+              <li>Feel free to edit or delete expenses using the "Edit" button.</li>
+          </ol>
+      </div>
+  </div>
+
+  <div class="help-info-box">
+      <div class="headings">
+          <h3>Adding Expenses</h3>
+          <hr>
+      </div>
+      <div class="sub-text">
+          <p>Learn how to add expenses to keep track of your spending:</p>
+          <ol>
+              <li>Click on the "Add Expense" button.</li>
+              <li>Enter the date, category, amount, and optional description for your expense.</li>
+              <li>Click "Add" to save the expense to your records.</li>
+          </ol>
+      </div>
+  </div>
+
+  <div class="help-info-box">
+      <div class="headings">
+          <h3>Contact Support</h3>
+          <hr>
+      </div>
+      <div class="sub-text">
+          <p>If you still need help, please contact our support team (basically me) for further assistance.</p>
+          <p>Email: macmyday101@gmail.com</p>
+      </div>
+  </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

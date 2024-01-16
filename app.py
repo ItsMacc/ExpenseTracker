@@ -47,6 +47,10 @@ def edit_expenses_page():
                            data_list=getUserExpenses(CURRENT_USER),
                            IS_SIGNED_IN=IS_SIGNED_IN)
 
+@app.route("/help")
+def help_page():
+    return render_template("help.html",IS_SIGNED_IN=IS_SIGNED_IN)
+
 # ----------------------------------------------------------------------------------------------
 
 #Sign in the user
@@ -196,4 +200,4 @@ def generatePieChartValues(user):
 
 # Running the application
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5069)

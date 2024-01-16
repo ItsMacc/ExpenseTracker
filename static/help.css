@@ -1,0 +1,48 @@
+.header{
+    padding-bottom:.1px;
+    background: linear-gradient(to right, #EBF0F0, #D0F8EF, #BEFEDF);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.help-info-box {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+}
+
+.headings {
+    text-align: center;
+}
+
+.headings h3 {
+    color: #333;
+}
+
+.headings hr {
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.sub-text {
+    color: #555;
+}
+
+.sub-text p {
+    margin-bottom: 15px;
+}
+
+ul, ol {
+    margin-bottom: 15px;
+}
+
+.show{
+    list-style: square;
+}
