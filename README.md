@@ -30,7 +30,8 @@ This application simplifies personal finance management by providing the followi
 or
 ```bash
 pip3 install requirements.tx
-   
+
+
 3. **Run the application:**
    ```bash
    python app.py
