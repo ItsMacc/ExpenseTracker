@@ -27,10 +27,9 @@ This application simplifies personal finance management by providing the followi
 2. **Install requirements:**
    ```bash
    pip install requirements.txt
-or
-```bash
-pip3 install requirements.tx
-
+  or
+  ```bash
+  pip3 install requirements.txt
 
 3. **Run the application:**
    ```bash
