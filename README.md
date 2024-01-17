@@ -27,10 +27,16 @@ This application simplifies personal finance management by providing the followi
 2. **Install requirements:**
    ```bash
    pip install requirements.txt
+or
+```bash
+pip3 install requirements.tx
    
 3. **Run the application:**
    ```bash
    python app.py
+or
+```bash
+python3 app.py
 
 ## **License:**
 Feel free to use expense tracker locally on your browser.
