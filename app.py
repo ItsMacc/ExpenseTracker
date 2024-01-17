@@ -83,7 +83,7 @@ def sign_in():
             CURRENT_USER = user_email
             IS_SIGNED_IN = True
 
-            # Creating a expense sheet for user
+            # Creating an expense sheet for user
             expenses_collection.insert_one({"user": user_email, "expenses": []})
 
             # Saving user information in database
@@ -97,6 +97,7 @@ def sign_in():
 def log_out():
     global IS_SIGNED_IN, CURRENT_USER
 
+    #set default values to variables
     IS_SIGNED_IN = False
     CURRENT_USER = "local"
 
@@ -111,6 +112,7 @@ def add_expense():
     if request.method == "POST":
         form = request.form
 
+        #Getting information from the form
         date = form.get("Date")
         category = form.get("Category")
         amount = form.get("Amount")
@@ -151,7 +153,7 @@ def delete_expenses():
 #----------------------------------------------------------------------------------------------
 
 
-#Helper function to reduce copying code
+#Helper functions
 
 
 #Retrieve user expenses from database
@@ -174,7 +176,6 @@ def totalAmount():
     for expense_record in data:
         amount = int(expense_record["Amount"])
         total+=amount
-
 
     return total
 
