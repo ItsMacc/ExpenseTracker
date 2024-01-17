@@ -21,11 +21,11 @@ This application simplifies personal finance management by providing the followi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/ItsMacc/ExpenseTracker.git
+   git clone git@github.com:ItsMacc/ExpenseTracker.git
    cd ExpenseTracker
    ```
    
-2. **Install requirements:**
+3. **Install requirements:**
    ```bash
    pip install requirements.txt
    ```
@@ -34,7 +34,7 @@ This application simplifies personal finance management by providing the followi
    pip3 install requirements.txt
    ```
    
-3. **Run the application:**
+4. **Run the application:**
     ```bash
     python app.py
     ```
