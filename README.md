@@ -23,18 +23,25 @@ This application simplifies personal finance management by providing the followi
    ```bash
    git clone https://github.com/ItsMacc/ExpenseTracker.git
    cd ExpenseTracker
+   ```
    
 2. **Install requirements:**
    ```bash
    pip install requirements.txt
-   <sub>or</sub>
+   ```
+   or
+   ```bash
    pip3 install requirements.txt
+   ```
    
 3. **Run the application:**
    ```bash
    python app.py
-   <sub>or</sub>
+   ```
+  or
+  ```bash
    python3 app.py
+  ```
 
 ## **License:**
 Feel free to use expense tracker locally on your browser.
