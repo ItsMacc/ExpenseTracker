@@ -24,11 +24,24 @@ This application simplifies personal finance management by providing the followi
    git clone https://github.com/ItsMacc/ExpenseTracker.git
    cd ExpenseTracker
    
-2. **Install requirements:**
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+
+3. **Activate virtual environment**
+   for windows
+   ```bash
+   .\venv\Scripts\activate
+
+   for macOS/linux
+   ```bash
+   source venv/bin/activate
+   
+4. **Install requirements:**
    ```bash
    pip install requirements.txt
    
-3. **Run the application:**
+5. **Run the application:**
    ```bash
    python app.py
 
