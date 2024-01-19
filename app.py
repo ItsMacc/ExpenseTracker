@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__)
@@ -68,9 +69,9 @@ def sign_in():
 
         # Check if user exists and match password.
         if user_information:
-            db_password = user_information["password"]
+            db_password_hashed = user_information["password"]
 
-            if db_password == password:
+            if check_password_hash(db_password_hashed, password):
                 IS_SIGNED_IN = True
                 CURRENT_USER = user_email
                 return expense_tracker()
@@ -83,11 +84,10 @@ def sign_in():
             CURRENT_USER = user_email
             IS_SIGNED_IN = True
 
-            # Creating an expense sheet for user
+            # Hash the password before saving it to the database
+            hashed_password = generate_password_hash(password)
             expenses_collection.insert_one({"user": user_email, "expenses": []})
-
-            # Saving user information in database
-            client_information_collection.insert_one({"user": user_email, "password": password})
+            client_information_collection.insert_one({"user": user_email, "password": hashed_password})
 
         return expense_tracker()
 
