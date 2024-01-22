@@ -1,9 +1,11 @@
 # IMPORTS:-
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+import certifi
 
 app = Flask(__name__)
 
@@ -12,10 +14,12 @@ IS_SIGNED_IN = False
 CURRENT_USER = "local"
 
 # MONGODB CONNECTION:-
-mongo_uri = os.environ.get("mongo_uri")
-client = MongoClient(mongo_uri)
-db = client["User_Information"]
-expenses_collection = db["ExpenseTracker"]
+ca = certifi.where()
+client = MongoClient("mongodb+srv://mac:mac@mongodbcluster.2k0eeut.mongodb.net/?retryWrites=true&w=majority",
+                     server_api=ServerApi('1'),
+                     tlsCAFile=ca)
+db = client.get_database("User_Information")
+expenses_collection = db.get_collection("ExpenseTracker")
 client_information_collection = db["Passwords"]
 
 # ALL ROUTES TO HTML FILES
