@@ -4,7 +4,6 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
 import certifi
 
 app = Flask(__name__)
